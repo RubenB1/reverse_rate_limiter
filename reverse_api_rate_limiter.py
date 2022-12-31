@@ -70,7 +70,7 @@ class ReverseRateLimiter():
         # value = -1, value is the number of credits left in the time window. The request credit has been DENIED to the current call.
 
     # get the authorization to make a request
-    def get_api_request_credit(self, key: str, window_in_seconds: int, limit_per_window: int, wait_seconds_if_credit_not_granted: float = 0) -> bool:
+    def get_api_request_credit(self, key: str, window_in_seconds: int, limit_per_window: int, wait_seconds_if_credit_not_granted: float = 0, max_retries: int = None) -> bool:
         """
         Request a credit to make an API request.
 
@@ -80,7 +80,8 @@ class ReverseRateLimiter():
         :param wait_seconds_if_credit_not_granted: float, is the number of seconds to wait if the credit is not granted before retry. 
         Default is 0 (do no wait and return false if the no credit is available in time window).
         If wait_seconds_if_credit_not_granted > 0, the function will wait and retry at given time intervals until the credit is granted.
-        
+        :param max_retries: int, is the maximum number of retries if the credit is not granted. Default is None (no limit, keeps retrying indefinitely).
+
         :return: bool, is the credit granted
         """
 
@@ -95,12 +96,22 @@ class ReverseRateLimiter():
         elif wait_seconds_if_credit_not_granted > 0:
             # if the credit is not granted and wait parameter != 0, wait and retry 
             # in a loop at the given time intervals until the credit is granted
-            while number_of_credits_left_in_window < 0:
+            # or the maximum number of retries is reached.
+            number_of_trials = 0
+
+            while number_of_credits_left_in_window < 0 and (max_retries is None or number_of_trials <= max_retries):
                 time.sleep(wait_seconds_if_credit_not_granted)
                 number_of_credits_left_in_window = self.request_api_request_credit(key, window_in_seconds, limit_per_window)
-            
-            # if the credit is granted, return true
-            return True
+
+                if number_of_credits_left_in_window >= 0:
+                    # if the credit is granted return true
+                    return True
+                    
+                number_of_trials += 1
+
+            # if the while loop is exited, the credit is not granted 
+            # and the maximum number of retries is reached. Return false.
+            return False
 
         else:
             # if the credit is not granted and wait parameter == 0, return false
