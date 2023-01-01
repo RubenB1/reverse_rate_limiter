@@ -32,7 +32,7 @@ class ReverseRateLimiter():
         # Set lua script for sliding window algorithm
         # Since the script is executed in directly Redis, 
         # the script is executed in a single transaction.
-        # from https://engagor.github.io/blog/2018/09/11/error-internal-rate-limit-reached/
+        # inspired from https://engagor.github.io/blog/2018/09/11/error-internal-rate-limit-reached/
         script = """
             local token = KEYS[1]
             local now = tonumber(ARGV[1])

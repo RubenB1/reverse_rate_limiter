@@ -26,9 +26,9 @@ To avoid hitting external API rate limits, it is important to be able to coordin
 
 This utility proposes an ultra-lightweight implementation of a reverse rate limiter based on a redis database. This implementation is simple to get started with, robust for use in production and especially suited for serverless applications.
 
-### As a classic rate limiter when no load balancer or gateway is present
+### As a traditional rate limiter when no load balancer or gateway is present
 
-A reverse rate limiter utility can also be used as a normal API rate limiter in situations where there is no load balancer or gateway are present, for example in serverless AWS lambda functions or containerized services such as Google Cloud Run.
+A reverse rate limiter utility can also be used as a normal API rate limiter in situations where no load balancer or gateway is present, for example in serverless AWS lambda functions or containerized services such as Google Cloud Run (or not easily configurable).
 
 In a typical API rate limiting scenario, a load balancer is used to distribute incoming requests across a pool of servers, and the rate limiter is implemented on the server side to limit the number of requests that each server can process over a given period of time. In this case, the rate limiter is protecting the servers from being overwhelmed by too many requests.
 
@@ -40,9 +40,9 @@ Overall, a reverse rate limiter utility can be used in either a traditional rate
 
 The goal of this implementation is to be robust, ultra-lightweight and simple to get started within minutes. It is specifically designed for serverless functions or containerized serverless microservices featuring traffic bursts and ultra-scalability.
 
-The rate limiting utility is build on top of the redis database.
+The rate limiting utility is built on top of the Redis database.
 
-It uses only the redis and time python libraries. The single implementation file can be copied directly to the codebase. This is done to ensure the best performance and avoid intermediaries and network latentency.
+It uses only the Redis and time python libraries. The single implementation file can be copied directly to the codebase. This is done to ensure the best performance and avoid intermediaries and network latency.
 
 ## Usage
 
@@ -100,8 +100,6 @@ for i in range(100):
     print(credit_is_granted)
 ```
 
-
 For more information on how to get started in less than 10 minutes, check out the medium article mentionned at the top of the readme.
-
 
 © Full copyrights to Ruben Burdin, 2022
