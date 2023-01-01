@@ -84,7 +84,7 @@ print(remaining_credits)
 
 #### Option 2: request a credit, returns true/false if a credit has been granted and consumed. Keeps retrying at custom time intervals until it effectively gets a credit.
 
-This example is a rate of 100 requests per 10 seconds. If the credits is not granted at the first request, it will automatically retry to request a credit 2 times at intervals of 0.1 second. The function will return `true` as soon as a credit is granted (and consumed). It returns `false` if none of the 3 requests (1 initial request and 2 retries) were not granted a credit.
+This example is a rate of 100 requests per 10 seconds. If the credits is not granted at the first request, it will automatically retry to request a credit 2 times at intervals of 0.1 second. The function will return `true` as soon as a credit is granted (and consumed). It returns `false` if none of the 3 requests (1 initial request and 2 retries) were granted a credit.
 
 ```python
 # request a credit in a loop and print if the credit is granted each time (will print true or false)
